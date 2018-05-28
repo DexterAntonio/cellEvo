@@ -11,6 +11,8 @@ import numpy as np
 import math
 from scipy import stats
 from scipy.stats import norm
+from tkinter import *
+from tkinter import ttk 
 
 #important classes 
 class Gene:
@@ -23,7 +25,52 @@ class RNA():
     def __init__(self):
         self.valid = False 
         self.rnaList = None
+class Position():
+    def __init__(self):
+        self.xPosS = 0 #x position start of rectangle
+        self.yPosS = 0 # y position start of rect
+        self.xPosE = 0 #x position end rect 
+        self.yPosE = 0 #y pos end rect 
+        self.surroundingPos = []
+        self.color = "green"
+        self.antibiotic = "" #to be implimented 
+    def drawSelf(self):
+        canvas.create_rectangle(self.xPosS,self.XposS,self.xPosE,self.yPosE,fill=self.color)
 
+
+
+
+    def getAnotherPos():
+        return self.surroundingPos(randint(0,self.surroundingPos.length)) 
+
+class Cell():
+    def __init__(self):
+        self.gene = Gene()
+        self.alive = True 
+        self.position = new point(0,0)
+        self.color = "blue"
+        self.generation = 0
+        self.mutationRate = 0
+        self.ac = ['0']
+
+        #to be implimented
+        self.fitnessNum = 0
+
+    def fission(self):
+        newCell = Cell()
+        newCell.gene = replication(self.gene,self.mutationRate,self.ac)
+        newCell.alive = True
+        newCell.position = self.position.getAnotherPos()
+        newCell.color = self.color 
+        newCell.generation = self.generation+1 
+        newCell.mutationRate = self.mutationRate
+        newCell.ac = self.ac 
+        return newCell 
+
+
+
+
+#important functions
 def copyLetter(letter,p,ac): #coppies the letter and occationally puts in a mutation
     if(random()>p):
         return letter
@@ -104,6 +151,8 @@ def translation(rna):
             stack.append(int(val))
             
     return stack.pop() 
+
+
 #important functions 
 def replication(geneOld,p,ac):
     #gene is the gene being duplicated
