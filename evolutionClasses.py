@@ -6,13 +6,10 @@ Created on Mon Nov 06 18:16:14 2017
 """
 
 from random import random, randint 
-import matplotlib.pyplot as plt
 import numpy as np 
 import math
 from scipy import stats
 from scipy.stats import norm
-from tkinter import *
-from tkinter import ttk 
 
 #important classes 
 class Gene:
@@ -25,17 +22,18 @@ class RNA():
     def __init__(self):
         self.valid = False 
         self.rnaList = None
-class Position():
-    def __init__(self):
-        self.xPosS = 0 #x position start of rectangle
-        self.yPosS = 0 # y position start of rect
-        self.xPosE = 0 #x position end rect 
-        self.yPosE = 0 #y pos end rect 
+class CellPos():
+
+    def __init__(self,xPosS,yPosS,xPosE,yPosE):
+        self.xPosS = xPosS #x position start of rectangle
+        self.yPosS = yPosS #y position start of rect
+        self.xPosE = xPosE #x position end rect 
+        self.yPosE = yPosE #y pos end rect 
         self.surroundingPos = []
         self.color = "green"
-        self.antibiotic = "" #to be implimented 
-    def drawSelf(self):
-        canvas.create_rectangle(self.xPosS,self.XposS,self.xPosE,self.yPosE,fill=self.color)
+        self.antibiotic = "A" #to be implimented 
+    def drawSelf(self,canvas):
+        canvas.create_rectangle(self.xPosS,self.yPosS,self.xPosE,self.yPosE,fill=self.color)
 
 
 
@@ -47,7 +45,7 @@ class Cell():
     def __init__(self):
         self.gene = Gene()
         self.alive = True 
-        self.position = new point(0,0)
+        self.position = CellPos(0,0,0,0)
         self.color = "blue"
         self.generation = 0
         self.mutationRate = 0
