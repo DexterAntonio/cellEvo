@@ -1,4 +1,4 @@
-
+import numpy as np 
 
 from evolutionClasses import * 
 from tkinter import Tk, Canvas
@@ -6,8 +6,8 @@ from tkinter import Tk, Canvas
 root = Tk()
 
 
-numXspaces = 2
-numYspaces = 1
+numXspaces = 3
+numYspaces = 3
 canWidth = 1000
 canHeight = 500
 
@@ -19,36 +19,55 @@ xLast = xStart
 yLast = yStart 
 
 
-canvas = Canvas(root,width=canWidth,height=canHeight)
-canvas.pack() 
 
 
 
 list_of_pos = []
-for i in range(0,canWidth//gridSizeX):
+posArray = np.ndarray([numXspaces,numYspaces],dtype=CellPos)
+for i in range(0,5):
+	print("################################################")
+
+for i in range(0, numXspaces):   #canWidth//gridSizeX):
 	xNext = xLast+gridSizeX 
-	for j in range(0,canHeight//gridSizeY):
+	for j in range(0,numYspaces):   #canHeight//gridSizeY):
 		yNext = yLast+gridSizeY
 		recPos =  CellPos(xLast,yLast,xNext,yNext)
-		#canvas.create_rectangle(xLast,yLast,xNext,yNext,fill="red")
-
 		list_of_pos.append(recPos)
+		posArray[i][j] = recPos
 		yLast = yNext
 	xLast = xNext
 	yLast = xStart
 
 
-recTest = []
 
-for rec in list_of_pos:
-	#print("rec.xPosS",rec.xPosS,"rec.yPosS",rec.yPosS,"rec.xPosE",rec.xPosE,"rec.yPosE",rec.yPosE)
-	rec.drawSelf(canvas)
+canvas = Canvas(root,width=canWidth,height=canHeight)
+canvas.pack() 
 
-	#blackLine = canvas.create_line(0,0,200,50)
+x = 0 #pheduo x 
+y = 0 #pheduo y 
+for row in posArray:
+	for rec in row:
+		#list_of_pos:
+		rec.drawSelf(canvas)
 
-	#greenBox = canvas.create_rectangle(25,25,130,60,fill="green")
+		for i in range(-1,2):
+			for j in range(-1,2):
+				print("x, y,, x+i,y+j were called",x,y,i,j,"(x+i) and (y+j)",(x+i),(x+j))
 
-#@canvas.delete(blackLine)
+				if((x+i>=0 and y+j>=0) and (x+i<numXspaces and y+j<numYspaces) and (i!=0 and j!=0)):
+					print("(x+i)",(x+i),"(y+j)",(y+j))
+					rec.surroundingPos.append(posArray[x+i][y+j])
+		x += 1 
+	y += 1 
+
+
+
+
+print(len(posArray[2][2].surroundingPos))
+#for pos in posArray[2][2].surroundingPos:
+#	print("pos is",pos)
+
+print()
 root.mainloop()
 
 #@canvas.delete(blackLine)

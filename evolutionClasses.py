@@ -50,7 +50,6 @@ class Cell():
         self.generation = 0
         self.mutationRate = 0
         self.ac = ['0']
-
         #to be implimented
         self.fitnessNum = 0
 
