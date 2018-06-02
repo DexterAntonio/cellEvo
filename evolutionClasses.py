@@ -17,7 +17,7 @@ class Gene:
         dnaLength = 10 
         self.dna = ['0']*dnaLength
         self.value = -1
-
+        
 class RNA():
     def __init__(self):
         self.valid = False 
@@ -50,6 +50,7 @@ class Cell():
         self.generation = 0
         self.mutationRate = 0
         self.ac = ['0']
+        self.radius = 10
         #to be implimented
         self.fitnessNum = 0
 
@@ -63,8 +64,9 @@ class Cell():
         newCell.mutationRate = self.mutationRate
         newCell.ac = self.ac 
         return newCell 
-
-
+    def drawSelf(self,canvas):
+        canvas.create_circle(self.xPosS,self.yPosS,self.radius,fill=self.color)
+        
 
 
 #important functions

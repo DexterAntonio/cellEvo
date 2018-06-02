@@ -5,12 +5,15 @@ from tkinter import Tk, Canvas
 
 root = Tk()
 
-
+#user can alter these to change the number of spaces in the grid
 numXspaces = 3
 numYspaces = 3
+
+#user can change these to change the canvas width and height 
 canWidth = 1000
 canHeight = 500
 
+#calculated for following forloops 
 gridSizeX = canWidth//numXspaces 
 gridSizeY = canHeight//numYspaces 
 xStart = 0
@@ -21,11 +24,9 @@ yLast = yStart
 
 
 
-
+#creates a position object 
 list_of_pos = []
 posArray = np.ndarray([numXspaces,numYspaces],dtype=CellPos)
-for i in range(0,5):
-	print("################################################")
 
 for i in range(0, numXspaces):   #canWidth//gridSizeX):
 	xNext = xLast+gridSizeX 
@@ -39,38 +40,33 @@ for i in range(0, numXspaces):   #canWidth//gridSizeX):
 	yLast = xStart
 
 
-
+#create canvas and put it on the window 
 canvas = Canvas(root,width=canWidth,height=canHeight)
 canvas.pack() 
 
 x = 0 #pheduo x 
 y = 0 #pheduo y 
+#this code fills each surrounding rectangle with their adjacent rectangle addresses
+#it also draws each position on the canvas 
 for row in posArray:
-	for rec in row:
 		#list_of_pos:
 		rec.drawSelf(canvas)
-
+		#print("########&&&&&&&&&&&&&&&&&&&&&&&&&")
+		#print("cell x = ", x, "y = ",y,"has neighbors")
 		for i in range(-1,2):
 			for j in range(-1,2):
-				print("x, y,, x+i,y+j were called",x,y,i,j,"(x+i) and (y+j)",(x+i),(x+j))
+				#print("x, y,, x+i,y+j were called",x,y,i,j,"(x+i) and (y+j)",(x+i),(x+j))
 
-				if((x+i>=0 and y+j>=0) and (x+i<numXspaces and y+j<numYspaces) and (i!=0 and j!=0)):
-					print("(x+i)",(x+i),"(y+j)",(y+j))
+				if(((x+i>=0) and y+j>=0) and (x+i<numXspaces and y+j<numYspaces) and ((x+i)!=0 or (y+j)!=0)):
+					#print("(x+i)",(x+i),"(y+j)",(y+j))
 					rec.surroundingPos.append(posArray[x+i][y+j])
 		x += 1 
 	y += 1 
+	x = 0 
 
-
-
-
-print(len(posArray[2][2].surroundingPos))
-#for pos in posArray[2][2].surroundingPos:
-#	print("pos is",pos)
-
-print()
 root.mainloop()
 
-#@canvas.delete(blackLine)
+#@canvas.delete(blackLine)l
 
 
 
