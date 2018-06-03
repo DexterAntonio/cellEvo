@@ -4,6 +4,7 @@ Created on Mon Nov 06 18:16:14 2017
 
 @author: dexter
 """
+from tkinter import Tk, Canvas,W
 
 from random import random, randint 
 import numpy as np 
@@ -32,14 +33,15 @@ class CellPos():
         self.surroundingPos = []
         self.color = "green"
         self.antibiotic = "A" #to be implimented 
+        self.cellsOnPos = []
     def drawSelf(self,canvas):
         canvas.create_rectangle(self.xPosS,self.yPosS,self.xPosE,self.yPosE,fill=self.color)
 
 
+    def getAnotherPos(self):
+        randPos = randint(0,len(self.surroundingPos)-1)
 
-
-    def getAnotherPos():
-        return self.surroundingPos(randint(0,self.surroundingPos.length)) 
+        return self.surroundingPos[randPos]
 
 class Cell():
     def __init__(self):
@@ -48,11 +50,15 @@ class Cell():
         self.position = CellPos(0,0,0,0)
         self.color = "blue"
         self.generation = 0
-        self.mutationRate = 0
-        self.ac = ['0']
-        self.radius = 10
+        self.mutationRate = 0.10
+        self.ac = ac = ['0','1','2','3','4','5','6','7','8','9','+','-','*','/',' ','d'] #allowed charters
         #to be implimented
         self.fitnessNum = 0
+        self.addedToPos = False 
+
+    def addToPosition(self):
+        if(not self.addedToPos):
+            self.position.cellsOnPos.append(self)
 
     def fission(self):
         newCell = Cell()
@@ -65,9 +71,20 @@ class Cell():
         newCell.ac = self.ac 
         return newCell 
     def drawSelf(self,canvas):
-        canvas.create_circle(self.xPosS,self.yPosS,self.radius,fill=self.color)
-        
+        self.addToPosition()
+        canvas.create_oval(self.position.xPosS,self.position.yPosS,self.position.xPosE,self.position.yPosE,fill=self.color)
+        canvas.create_text((self.position.xPosS+self.position.xPosE)/2,(self.position.yPosS+self.position.yPosE)/2,anchor=W,font="Purisa",text=str(self.getFitNum()))
 
+    def getFitNum(self):
+        if(self.fitnessNum>0):
+            return self.fitnessNum
+        else:
+            tmpRNA = transcription(self.gene)
+            if(tmpRNA.valid):
+                self.fitnessNum = translation(tmpRNA)
+                return self.fitnessNum
+            else:
+                return -1
 
 #important functions
 def copyLetter(letter,p,ac): #coppies the letter and occationally puts in a mutation
